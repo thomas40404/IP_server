@@ -15,13 +15,24 @@ function save() {
 
 function extractLocalIPSuffix(url) {
     try {
-        const u = new URL(url);
-        const host = u.hostname; // get hostname
+        // ajouter http:// si nécessaire
+        let tempUrl = url;
+        if (!/^https?:\/\//i.test(url)) {
+            tempUrl = 'http://' + url;
+        }
+
+        const u = new URL(tempUrl);
+        const host = u.hostname;
+
         if (host.startsWith("192.168.0.")) {
-            // on prend tout après 192.168.0. et garde le dernier nombre complet
             let suffix = host.substring("192.168.0.".length);
-            let match = suffix.match(/^\d+/); // prend les chiffres au début
-            return match ? match[0] : '';
+            // garder tous les chiffres jusqu'au premier non-chiffre ou fin
+            let result = '';
+            for (let i = 0; i < suffix.length; i++) {
+                if (/\d/.test(suffix[i])) result += suffix[i];
+                else break;
+            }
+            return result;
         }
     } catch(e) {
         return '';
