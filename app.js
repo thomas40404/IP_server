@@ -6,8 +6,7 @@ const popup = document.getElementById("popup");
 const openPopup = document.getElementById("open-popup");
 const closePopup = document.getElementById("popup-close");
 const popupAdd = document.getElementById("popup-add");
-const popupIp = document.getElementById("popup-ip");
-const popupPort = document.getElementById("popup-port");
+const popupUrl = document.getElementById("popup-ip"); // now full URL
 const popupImg = document.getElementById("popup-img");
 
 function save() {
@@ -21,13 +20,10 @@ function render() {
         const div = document.createElement("div");
         div.className = "card";
 
-        let url = `http://${srv.ip}`;
-        if (srv.port) url += `:${srv.port}`;
-
         div.innerHTML = `
-            <a href="${url}" target="_blank">
+            <a href="${srv.url}" target="_blank">
                 <img src="${srv.image}" onerror="this.style.opacity=0.5;this.alt='Image introuvable'" />
-                <div class="card-ip">${srv.ip}:${srv.port || ''}</div>
+                <div class="card-ip">${srv.url}</div>
             </a>
             <div class="card-buttons">
                 <button class="btn btn-edit" onclick="editServer(${index})">Edit</button>
@@ -39,9 +35,9 @@ function render() {
     });
 }
 
-function addServer(ip, port, img) {
-    if (!ip || !img) return;
-    servers.push({ ip, port, image: img });
+function addServer(url, img) {
+    if (!url || !img) return;
+    servers.push({ url, image: img });
     save();
     render();
 }
@@ -49,32 +45,27 @@ function addServer(ip, port, img) {
 // popup handlers
 openPopup.addEventListener("click", () => {
     popup.style.display = "flex";
-    popupIp.focus();
+    popupUrl.focus();
 });
 closePopup.addEventListener("click", () => {
     popup.style.display = "none";
-    popupIp.value = "";
-    popupPort.value = "";
+    popupUrl.value = "";
     popupImg.value = "";
 });
 popupAdd.addEventListener("click", () => {
-    const ip = popupIp.value.trim();
-    const port = popupPort.value.trim();
+    const url = popupUrl.value.trim();
     const img = popupImg.value.trim();
-    if (!ip || !img || !port) return alert("IP, port et image sont requises");
-    addServer(ip, port, img);
+    if (!url || !img) return alert("URL et image sont requises");
+    addServer(url, img);
     popup.style.display = "none";
-    popupIp.value = "";
-    popupPort.value = "";
+    popupUrl.value = "";
     popupImg.value = "";
 });
 
 function editServer(i) {
-    const newIp = prompt("Nouvelle IP :", servers[i].ip);
-    const newPort = prompt("Nouveau port :", servers[i].port || "");
+    const newUrl = prompt("Nouvelle URL :", servers[i].url);
     const newImg = prompt("Nouvelle image :", servers[i].image);
-    if (newIp !== null) servers[i].ip = newIp;
-    if (newPort !== null) servers[i].port = newPort;
+    if (newUrl !== null) servers[i].url = newUrl;
     if (newImg !== null) servers[i].image = newImg;
     save();
     render();
