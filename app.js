@@ -61,7 +61,7 @@ popupAdd.addEventListener("click", () => {
     const ip = popupIp.value.trim();
     const port = popupPort.value.trim();
     const img = popupImg.value.trim();
-    if (!ip || !img) return alert("IP, port et Image sont requises");
+    if (!ip || !img || !port) return alert("IP, port et image sont requises");
     addServer(ip, port, img);
     popup.style.display = "none";
     popupIp.value = "";
