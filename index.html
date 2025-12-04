@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Serveurs</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1 class="title">Servers Dashboard</h1>
+
+<div id="servers" class="grid"></div>
+
+<!-- Floating add button -->
+<button id="open-popup" class="add-floating">+</button>
+
+<!-- Popup for adding a server -->
+<div id="popup" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h2>Ajouter un serveur</h2>
+    <input id="popup-ip" type="text" placeholder="IP du serveur">
+    <input id="popup-img" type="text" placeholder="URL de l'image">
+    <div class="popup-buttons">
+      <button id="popup-add">Ajouter</button>
+      <button id="popup-close">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
