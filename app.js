@@ -6,7 +6,7 @@ const popup = document.getElementById("popup");
 const openPopup = document.getElementById("open-popup");
 const closePopup = document.getElementById("popup-close");
 const popupAdd = document.getElementById("popup-add");
-const popupUrl = document.getElementById("popup-ip"); // full URL
+const popupUrl = document.getElementById("popup-ip");
 const popupImg = document.getElementById("popup-img");
 
 function save() {
@@ -18,9 +18,9 @@ function extractLocalIPSuffix(url) {
         const u = new URL(url);
         const host = u.hostname; // get hostname
         if (host.startsWith("192.168.0.")) {
+            // on prend tout après 192.168.0. et garde le dernier nombre complet
             let suffix = host.substring("192.168.0.".length);
-            // keep only digits
-            let match = suffix.match(/^\d+/);
+            let match = suffix.match(/^\d+/); // prend les chiffres au début
             return match ? match[0] : '';
         }
     } catch(e) {
