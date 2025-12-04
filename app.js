@@ -6,11 +6,27 @@ const popup = document.getElementById("popup");
 const openPopup = document.getElementById("open-popup");
 const closePopup = document.getElementById("popup-close");
 const popupAdd = document.getElementById("popup-add");
-const popupUrl = document.getElementById("popup-ip"); // now full URL
+const popupUrl = document.getElementById("popup-ip"); // full URL
 const popupImg = document.getElementById("popup-img");
 
 function save() {
     localStorage.setItem("servers", JSON.stringify(servers));
+}
+
+function extractLocalIPSuffix(url) {
+    try {
+        const u = new URL(url);
+        const host = u.hostname; // get hostname
+        if (host.startsWith("192.168.0.")) {
+            let suffix = host.substring("192.168.0.".length);
+            // keep only digits
+            let match = suffix.match(/^\d+/);
+            return match ? match[0] : '';
+        }
+    } catch(e) {
+        return '';
+    }
+    return '';
 }
 
 function render() {
@@ -20,10 +36,13 @@ function render() {
         const div = document.createElement("div");
         div.className = "card";
 
+        let url = srv.url;
+        const ipLabel = extractLocalIPSuffix(url);
+
         div.innerHTML = `
-            <a href="${srv.url}" target="_blank">
+            <a href="${url}" target="_blank">
                 <img src="${srv.image}" onerror="this.style.opacity=0.5;this.alt='Image introuvable'" />
-                <div class="card-ip">${srv.url}</div>
+                <div class="card-ip">${ipLabel}</div>
             </a>
             <div class="card-buttons">
                 <button class="btn btn-edit" onclick="editServer(${index})">Edit</button>
